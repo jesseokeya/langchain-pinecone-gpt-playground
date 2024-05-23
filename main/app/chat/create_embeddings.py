@@ -1,3 +1,7 @@
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from app.chat.vector_stores.pinecone import vector_store
+
 def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
     """
     Generate and store embeddings for the given pdf
@@ -9,10 +13,21 @@ def create_embeddings_for_pdf(pdf_id: str, pdf_path: str):
 
     :param pdf_id: The unique identifier for the PDF.
     :param pdf_path: The file path to the PDF.
-
+∏
     Example Usage:
 
     create_embeddings_for_pdf('123456', '/path/to/pdf')
     """
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=500,
+        chunk_overlap=100
+    )
+
+    loader = PyPDFLoader(pdf_path)
+    docs = loader.load_and_split(text_splitter)
+
+    print(docs)
+
+    vector_store.add_documents(docs)
 
     pass
