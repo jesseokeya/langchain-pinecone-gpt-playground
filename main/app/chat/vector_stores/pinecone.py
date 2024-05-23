@@ -8,12 +8,7 @@ pinecone.Pinecone(
     environment=os.getenv("PINECONE_ENV_NAME")
 )
 
-host = os.getenv("PINECONE_HOST")
-index = pinecone.Index(os.getenv("PINECONE_INDEX_NAME"), host)
-
-# Initialize the Pinecone vector store with the required 'text_key' argument
-vector_store = Pinecone(
-    index,
-    embeddings,
-    text_key=os.getenv("PINECONE_INDEX_NAME")
+vector_store = Pinecone.from_existing_index(
+    os.getenv("PINECONE_INDEX_NAME"),
+    embeddings
 )
